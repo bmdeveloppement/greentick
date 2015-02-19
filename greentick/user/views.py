@@ -1,9 +1,12 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
+
+from user.models import User
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the HomePage.")
+    return render(request, 'index/index.html', {})
 
-def detail(request, user_id):
-    return HttpResponse("You're looking at user %s." % user_id)
+
+def edit(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    return render(request, 'user/edit.html', {'user': user})

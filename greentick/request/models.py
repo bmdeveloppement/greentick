@@ -1,13 +1,19 @@
 from django.db import models
-from user.models import User
+from user.models import User, Company
+
+ANSWER_CHOICES = (
+    ('1', 'Yes'),
+    ('2', 'Maybe'),
+    ('3', 'No'),
+)
 
 
 class Request(models.Model):
     user = models.ForeignKey(User)
+    type = models.ForeignKey(Type)
     date_add = models.DateTimeField(auto_now=False, auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True, auto_now_add=False)
     name = models.CharField(max_length=200)
-    type = models.CharField(max_length=200)  # @TODO : List : Holidays / Design / ...
     description = models.TextField()
     tracking_reference = models.CharField(max_length=200, null=True)
 
@@ -21,7 +27,7 @@ class Answer(models.Model):
     date_add = models.DateTimeField(auto_now=False, auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True, auto_now_add=False)
     description = models.TextField()
-    answer = models.CharField(max_length=5)  # @TODO : List : Yes / No / Maybe
+    answer = models.PositiveSmallIntegerField(choices=ANSWER_CHOICES)
 
     def __str__(self):
         return self.description
@@ -36,4 +42,10 @@ class File(models.Model):
     user = models.ForeignKey(User)
     request = models.ForeignKey(Request)
     date = models.DateTimeField(auto_now=False, auto_now_add=True)
-    file = models.FileField(upload_to='',null=True)
+    file = models.FileField(upload_to='', null=True)
+
+
+class Type(models.Model):
+    company = models.ForeignKey(Company, null=True)
+    date = models.DateTimeField(auto_now=False, auto_now_add=True)
+    title = models.CharField(max_length=50)

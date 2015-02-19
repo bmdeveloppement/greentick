@@ -6,5 +6,5 @@ urlpatterns = patterns(
     '',
     url(r'^$', views.index, name='index'),
     # ex: /user/5/
-    url(r'^(?P<user_id>\d+)/$', views.detail, name='detail'),
+    url(r'^edit/(?P<user_id>\d+)/$', views.edit, name='edit'),
 )

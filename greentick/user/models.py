@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Company(models.Model):
@@ -9,13 +10,10 @@ class Company(models.Model):
         return self.name
 
 
-class User(models.Model):
+class User(User):
+    user = models.OneToOneField(User)
     company = models.ForeignKey(Company)
-    first_name = models.CharField(max_length=200)
-    last_name = models.CharField(max_length=200)
-    email = models.EmailField(max_length=100, unique=True)
-    subscription_date = models.DateTimeField(auto_now=False, auto_now_add=True)
-    last_login_date = models.DateTimeField(auto_now=True, auto_now_add=False)
+    job_title = models.CharField(max_length=200)
 
     def __str__(self):
         return '%s %s' % (self.first_name, self.last_name)

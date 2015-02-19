@@ -43,9 +43,3 @@ class File(models.Model):
     request = models.ForeignKey(Request)
     date = models.DateTimeField(auto_now=False, auto_now_add=True)
     file = models.FileField(upload_to='', null=True)
-
-
-class Type(models.Model):
-    company = models.ForeignKey(Company, null=True)
-    date = models.DateTimeField(auto_now=False, auto_now_add=True)
-    title = models.CharField(max_length=50)

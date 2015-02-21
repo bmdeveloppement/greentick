@@ -6,4 +6,6 @@ def index(request):
 
 
 def dashboard(request):
-    return render(request, 'index/dashboard.html', {})
+    if request.user.is_authenticated():
+        return render(request, 'index/dashboard.html', {'user': request.user})
+    return render(request, 'index/dashboard.html', {'user': 'Anonymous'})

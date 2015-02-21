@@ -2,8 +2,9 @@ import logging
 from django.http import HttpResponse
 from django.http import Http404
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
+from django.contrib import messages
 from django.db import transaction
 from user.models import User as CustomUser, Company
 from user.forms import CreateUserForm, LoginForm
@@ -57,6 +58,10 @@ def create(request):
 
 
 def login(request):
+    # Is user already logged ?
+    if request.user.is_authenticated():
+        return redirect('/dashboard/')
+
     if request.method == 'POST':
         # Form is sent
         form = LoginForm(request.POST)
@@ -65,17 +70,19 @@ def login(request):
             user = authenticate(username=form.cleaned_data.get('username'),
                                 password=form.cleaned_data.get('password'))
             if user:
+                # Authenticate & redirect on the dashboard
                 auth_login(request, user)
+                return redirect('/dashboard/')
             else:
-                pass
-            # Redirect on the dashboard
-            return render(request, 'index/index.html', {})
+                messages.add_message(request, messages.INFO, 'Authentication failed')
+
     else:
         # Show form
         form = LoginForm()
 
-    return render(request, 'index/index.html', {'form': form})
+    return render(request, 'user/login.html', {'form': form})
 
 
 def logout(request):
-    pass
+    auth_logout(request)
+    return redirect('/')

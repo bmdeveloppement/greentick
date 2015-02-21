@@ -2,6 +2,9 @@ from django import forms
 from django.core import validators
 from django.contrib.auth.models import User
 
+# Password configuration
+PASSWORD_MIN_LENGTH = 6
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username', max_length=30)

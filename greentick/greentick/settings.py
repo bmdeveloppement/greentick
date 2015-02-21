@@ -91,7 +91,3 @@ STATIC_URL = '/static/'
 # Uploaded files
 
 MEDIA_ROOT = 'uploads'
-
-# Password configuration
-
-PASSWORD_MIN_LENGTH = 6

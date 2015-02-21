@@ -55,5 +55,6 @@ target/
 
 # Custom
 uploads/
+venv/
 .idea/workspace.xml
 .DS_Store

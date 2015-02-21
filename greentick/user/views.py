@@ -2,7 +2,7 @@ import logging
 from django.http import HttpResponse
 from django.http import Http404
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User
 from django.db import transaction
 from user.models import User as CustomUser, Company
@@ -45,7 +45,7 @@ def create(request):
             user = authenticate(username=form.cleaned_data.get('username'),
                                 password=form.cleaned_data.get('password'))
             if user:
-                login(request, user)
+                auth_login(request, user)
 
             # Redirect on the dashboard
             return render(request, 'index/dashboard.html', {})
@@ -65,7 +65,7 @@ def login(request):
             user = authenticate(username=form.cleaned_data.get('username'),
                                 password=form.cleaned_data.get('password'))
             if user:
-                login(request, user)
+                auth_login(request, user)
             else:
                 pass
             # Redirect on the dashboard

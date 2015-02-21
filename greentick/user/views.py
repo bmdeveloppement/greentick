@@ -1,9 +1,14 @@
+import logging
 from django.http import HttpResponse
 from django.http import Http404
 from django.shortcuts import render
 from django.contrib.auth import login
-from user.models import User
+from django.contrib.auth.models import User
+from django.db import transaction
+from user.models import User as CustomUser, Company
 from user.forms import CreateUserForm
+
+logger = logging.getLogger(__name__)
 
 
 def index(request):
@@ -20,20 +25,32 @@ def create(request):
         # Form is sent
         form = CreateUserForm(request.POST)
         if form.is_valid():
+            # Get or create the company
+            try:
+                Company.objects.get(name=form.cleaned_data['company'])
+            except Company.DoesNotExist:
+                Company(name=form.cleaned_data['company'])
+
             # Create the new user
-            new_user = User.objects.create_user(
-                self.cleaned_data['username'],
-                self.cleaned_data['email'],
-                self.cleaned_data['password']
+            CustomUser.user = User.objects.create_user(
+                username,
+                form.cleaned_data['email'],
+                form.cleaned_data['password']
             )
-            new_user.first_name = self.cleaned_data['first_name']
-            new_user.last_name = self.cleaned_data['last_name']
-            new_user.company = self.cleaned_data['company']
-            new_user.job_title = self.cleaned_data['job_title']
-            new_user.save()
+            CustomUser.first_name = form.cleaned_data['first_name']
+            CustomUser.last_name = form.cleaned_data['last_name']
+            CustomUser.company = Company  # @TODO Use get_or_create()
+            CustomUser.job_title = form.cleaned_data['job_title']
+
+            # Transactional DB Registering
+            with transaction.atomic():
+                Company.save()
+                CustomUser.save()
+
+            logger.info('New user created : %s - %s' % (User, Company))
 
             # Log the user
-            login(new_user)
+            login(User)
 
             # Redirect on the dashboard
             return render(request, 'index/index.html', {})

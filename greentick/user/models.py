@@ -10,7 +10,7 @@ class Company(models.Model):
         return self.name
 
 
-class User(User):
+class User(models.Model):
     user = models.OneToOneField(User)
     company = models.ForeignKey(Company)
     job_title = models.CharField(max_length=200)

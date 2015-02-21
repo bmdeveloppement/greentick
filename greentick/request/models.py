@@ -8,6 +8,15 @@ ANSWER_CHOICES = (
 )
 
 
+class Type(models.Model):
+    company = models.ForeignKey(Company, default=None, null=True, blank=True)
+    date = models.DateTimeField(auto_now=False, auto_now_add=True)
+    title = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.title
+
+
 class Request(models.Model):
     user = models.ForeignKey(User)
     type = models.ForeignKey(Type)
@@ -42,4 +51,4 @@ class File(models.Model):
     user = models.ForeignKey(User)
     request = models.ForeignKey(Request)
     date = models.DateTimeField(auto_now=False, auto_now_add=True)
-    file = models.FileField(upload_to='', null=True)
+    file = models.FileField(upload_to='')

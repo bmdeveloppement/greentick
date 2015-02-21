@@ -3,9 +3,9 @@ from django.core import validators
 from django.contrib.auth.models import User
 
 
-class LoginUserForm(forms.Form):
-    email = forms.EmailField(max_length=100)
-    password = forms.CharField(max_length=50)
+class LoginForm(forms.Form):
+    username = forms.CharField(label='Username', max_length=30)
+    password = forms.CharField(label='Password', widget=forms.PasswordInput, max_length=50)
 
 
 class CreateUserForm(forms.Form):
@@ -28,3 +28,15 @@ class CreateUserForm(forms.Form):
             )
 
         return username
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+
+        if len(password) < PASSWORD_MIN_LENGTH:
+            raise forms.ValidationError(
+                'Your password have to be %(value) characters or more',
+                code='already_exists',
+                params={'value': PASSWORD_MIN_LENGTH},
+            )
+
+        return password

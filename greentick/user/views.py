@@ -25,32 +25,26 @@ def create(request):
         # Form is sent
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            # Get or create the company
-            try:
-                Company.objects.get(name=form.cleaned_data['company'])
-            except Company.DoesNotExist:
-                Company(name=form.cleaned_data['company'])
-
-            # Create the new user
-            CustomUser.user = User.objects.create_user(
-                username,
-                form.cleaned_data['email'],
-                form.cleaned_data['password']
-            )
-            CustomUser.first_name = form.cleaned_data['first_name']
-            CustomUser.last_name = form.cleaned_data['last_name']
-            CustomUser.company = Company  # @TODO Use get_or_create()
-            CustomUser.job_title = form.cleaned_data['job_title']
-
             # Transactional DB Registering
             with transaction.atomic():
-                Company.save()
-                CustomUser.save()
+                # Create the new user
+                custom_user = CustomUser()
+                company, is_company_created = Company.objects.get_or_create(name=form.cleaned_data.get('company'))
+                custom_user.user = User.objects.create_user(
+                    form.cleaned_data.get('username'),
+                    form.cleaned_data.get('email'),
+                    form.cleaned_data.get('password')
+                )
+                custom_user.first_name = form.cleaned_data.get('first_name')
+                custom_user.last_name = form.cleaned_data.get('last_name')
+                custom_user.company = company
+                custom_user.job_title = form.cleaned_data.get('job_title')
+                custom_user.save()
 
             logger.info('New user created : %s - %s' % (User, Company))
 
             # Log the user
-            login(User)
+            login(request, custom_user)
 
             # Redirect on the dashboard
             return render(request, 'index/index.html', {})

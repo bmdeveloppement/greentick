@@ -1,7 +1,7 @@
 import logging
 from django.http import HttpResponse
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User
 from django.db import transaction
@@ -31,10 +31,10 @@ def create(request):
                 custom_user.user = User.objects.create_user(
                     form.cleaned_data.get('username'),
                     form.cleaned_data.get('email'),
-                    form.cleaned_data.get('password')
+                    form.cleaned_data.get('password'),
+                    first_name=form.cleaned_data.get('first_name'),
+                    last_name=form.cleaned_data.get('last_name')
                 )
-                custom_user.first_name = form.cleaned_data.get('first_name')
-                custom_user.last_name = form.cleaned_data.get('last_name')
                 custom_user.company = company
                 custom_user.job_title = form.cleaned_data.get('job_title')
                 custom_user.save()
@@ -48,7 +48,7 @@ def create(request):
                 auth_login(request, user)
 
             # Redirect on the dashboard
-            return render(request, 'index/dashboard.html', {})
+            return redirect('/dashboard/')
     else:
         # Show form
         form = CreateUserForm()

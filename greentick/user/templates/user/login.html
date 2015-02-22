@@ -1,22 +1,10 @@
-{% load staticfiles %}
+{% extends 'layout.html' %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'user/style.css' %}" />
+{% block content %}
 
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-
-<form method="post" action="{% url 'user:login' %}" class="sign-up-form">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Login" />
-</form>
-
-
-<p>Click here to <a href="{% url 'user:login' %}">sign-in</a></p>
-
-<p>Or there to <a href="{% url 'user:create' %}">sign-up</a></p>
+    <form method="post" action="{% url 'user:login' %}" class="sign-up-form">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Login" />
+    </form>
+{% endblock %}

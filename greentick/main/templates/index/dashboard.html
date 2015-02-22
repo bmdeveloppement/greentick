@@ -1,6 +1,6 @@
-<strong>Hello</strong> {{ user.first_name }} {{ user.last_name }} !!<br />
-This is the GreenTick revolutionary Dashboard ;)
+{% extends 'layout.html' %}
 
-<p>Click here to <a href="{% url 'user:login' %}">sign-in</a></p>
-<p>Or there to <a href="{% url 'user:create' %}">sign-up</a></p>
-<p>Or there to <a href="{% url 'user:logout' %}">logout</a></p>
+{% block content %}
+    Your name is : {{ user.first_name }} {{ user.last_name }} !!<br />
+    This is the GreenTick revolutionary Dashboard ;)
+{% endblock %}

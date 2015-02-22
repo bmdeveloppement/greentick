@@ -1,5 +1,12 @@
-<form method="post" action="{% url 'user:create' %}" class="sign-up-form">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Sign up !" />
-</form>
+{% extends 'layout.html' %}
+
+{% block content %}
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'user/style.css' %}" />
+
+    <form method="post" action="{% url 'user:create' %}" class="sign-up-form">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Sign up !" />
+    </form>
+{% endblock %}

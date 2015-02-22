@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'request/style.css' %}" />
+
+    <form method="post" action="{% url 'request:create' %}" class="create-request-form">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit" />
+    </form>
+{% endblock %}

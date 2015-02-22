@@ -1,5 +1,8 @@
 <p>
-    <p>Click here to <a href="{% url 'user:login' %}">login</a></p>
-    <p>Or there to <a href="{% url 'user:create' %}">sign-up</a></p>
-    <p>Or there to <a href="{% url 'user:logout' %}">logout</a></p>
+    <p><a href="{% url 'main:dashboard' %}">dashboard</a></p>
+    <p><a href="{% url 'main:index' %}">index</a></p>
+    <p><a href="{% url 'user:login' %}">login</a></p>
+    <p><a href="{% url 'user:create' %}">sign-up</a></p>
+    <p><a href="{% url 'user:logout' %}">logout</a></p>
+    <p><a href="{% url 'request:create' %}">New request</a></p>
 </p>

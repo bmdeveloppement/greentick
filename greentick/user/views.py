@@ -1,6 +1,4 @@
 import logging
-from django.http import HttpResponse
-from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
@@ -13,11 +11,18 @@ logger = logging.getLogger(__name__)
 
 
 def edit(request, user_id):
-    user = get_object_or_404(User, pk=user_id)
+    # Get the current user
+    if request.user.is_authenticated():
+        user = get_object_or_404(User, pk=user_id)
     return render(request, 'user/edit.html', {'user': request.user})
 
 
 def create(request):
+    # Check the user isn't already authenticated
+    if request.user.is_authenticated():
+        messages.add_message(request, messages.INFO, 'You are already connected')
+        return render(request, 'index/dashboard.html', {'user': request.user})
+
     if request.method == 'POST':
         # Form is sent
         form = CreateUserForm(request.POST)

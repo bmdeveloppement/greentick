@@ -16,6 +16,11 @@ class Type(models.Model):
     def __str__(self):
         return self.title
 
+    def get_for_user(self, user):
+        types = self.objects.filter(company=company).all()
+        return types
+
+
 
 class Request(models.Model):
     user = models.ForeignKey(User)

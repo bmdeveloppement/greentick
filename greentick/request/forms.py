@@ -1,6 +1,10 @@
 from django import forms
-from django.contrib.auth.models import User
+from request.models import Type
 
 
 class CreateRequestForm(forms.Form):
-    type = forms.ChoiceField()
+    type = forms.ModelChoiceField(queryset=None)
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        self.fields['type'] = forms.ModelChoiceField(queryset=Type.get_for_user(user))

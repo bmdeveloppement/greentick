@@ -98,7 +98,7 @@ STATICFILES_DIRS = (
     join(dirname(dirname(__file__)), 'static'),
 )
 
-
 # Uploaded files
 
 MEDIA_ROOT = 'uploads'
+

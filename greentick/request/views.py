@@ -1,13 +1,20 @@
-from django.shortcuts import render
+import logging
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.db import transaction
 from request.forms import CreateRequestForm
+from user.models import User
+
+logger = logging.getLogger(__name__)
+
 
 def create(request):
     if request.user.is_authenticated():
+        # Get the full user obj from SimpleLazyLoad user obj
+        user = User.objects.filter(pk=request.user.id).get()
         if request.method == 'POST':
             # Form is sent
-            form = CreateRequestForm(request.POST, request.user)
+            form = CreateRequestForm(request.POST, user=user)
             if form.is_valid():
                 # Transactional DB Registering
                 with transaction.atomic():
@@ -22,7 +29,7 @@ def create(request):
                 return redirect('/dashboard/')
         else:
             # Show form
-            form = CreateUserForm()
+            form = CreateRequestForm(user=user)
 
         return render(request, 'user/create.html', {'form': form})
     else:

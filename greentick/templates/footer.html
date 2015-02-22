@@ -1,8 +1,7 @@
-<p>
-    <p><a href="{% url 'main:dashboard' %}">dashboard</a></p>
-    <p><a href="{% url 'main:index' %}">index</a></p>
-    <p><a href="{% url 'user:login' %}">login</a></p>
-    <p><a href="{% url 'user:create' %}">sign-up</a></p>
-    <p><a href="{% url 'user:logout' %}">logout</a></p>
-    <p><a href="{% url 'request:create' %}">New request</a></p>
-</p>
+{% load staticfiles %}
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>

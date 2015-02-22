@@ -14,6 +14,9 @@ class Type(models.Model):
     date = models.DateTimeField(auto_now=False, auto_now_add=True)
     title = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.title
+
     @staticmethod
     def get_for_user(user):
         return Type.objects.filter(Q(company=user.company) | Q(company=None)).all()
@@ -28,6 +31,9 @@ class Request(models.Model):
     description = models.TextField()
     tracking_reference = models.CharField(max_length=200, null=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Answer(models.Model):
     user = models.ForeignKey(User)
@@ -36,6 +42,9 @@ class Answer(models.Model):
     date_modified = models.DateTimeField(auto_now=True, auto_now_add=False)
     description = models.TextField()
     answer = models.PositiveSmallIntegerField(choices=ANSWER_CHOICES)
+
+    def __str__(self):
+        return self.description
 
 
 class RequestValidator(models.Model):

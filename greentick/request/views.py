@@ -35,4 +35,3 @@ def create(request):
     else:
         messages.add_message(request, messages.INFO, 'You are not connected')
         return render(request, 'index/index.html', {})
-

@@ -20,20 +20,20 @@
                 <li class="sidebar-brand">
                     <a href="{% url 'main:index' %}">
                         <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
-                        GreenTick
+                        <span>GreenTick</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{% url 'main:dashboard' %}">Dashboard</a>
+                <li class="active">
+                    <a href="{% url 'main:dashboard' %}"><i class="glyphicon glyphicon-th-list"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="{% url 'user:login' %}">Login</a>
+                    <a href="{% url 'user:login' %}"><i class="glyphicon glyphicon-log-in"></i> Login</a>
                 </li>
                 <li>
-                    <a href="{% url 'user:logout' %}">Log out</a>
+                    <a href="{% url 'user:logout' %}"><i class="glyphicon glyphicon-log-out"></i> Log out</a>
                 </li>
                 <li>
-                    <a href="{% url 'request:create' %}">New Request</a>
+                    <a href="{% url 'request:create' %}"><i class="glyphicon glyphicon-edit"></i> New Request</a>
                 </li>
                 <li>
                     <a href="{% url 'user:create' %}">New user</a>

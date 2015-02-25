@@ -52,14 +52,16 @@
     margin: 0;
     padding: 0;
     list-style: none;
+    font-size: 20px;
+    font-weight: normal;
 }
 
 .sidebar-nav li {
-    text-indent: 20px;
-    line-height: 40px;
+    line-height: 50px;
 }
 
 .sidebar-nav li a {
+    padding-left: 20px;
     display: block;
     text-decoration: none;
     color: white;
@@ -80,10 +82,12 @@
     height: 65px;
     font-size: 35px;
     line-height: 70px;
+    margin-bottom: 5px;
 }
 
 .sidebar-nav > .sidebar-brand a {
     color: white;
+    margin-top: 15px;
 }
 
 .sidebar-nav > .sidebar-brand a:hover {

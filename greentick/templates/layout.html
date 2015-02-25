@@ -10,11 +10,12 @@
                 {% endif %}
 
                 {% if messages %}
-                    <ul class="messages">
-                        {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
+                    {% for message in messages %}
+                        <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}" role="alert">
+                            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
                 {% endif %}
 
                 {% block content %}Oops ! It seems we have some problems with finding your template !{% endblock %}

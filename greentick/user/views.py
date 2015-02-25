@@ -20,7 +20,7 @@ def edit(request, user_id):
 def create(request):
     # Check the user isn't already authenticated
     if request.user.is_authenticated():
-        messages.add_message(request, messages.INFO, 'You are already connected')
+        messages.add_message(request, messages.WARNING, 'You are already connected')
         return render(request, 'index/dashboard.html', {'user': request.user})
 
     # Process form
@@ -74,7 +74,7 @@ def login(request):
             auth_login(request, user)
             return redirect('/dashboard/')
         else:
-            messages.add_message(request, messages.INFO, 'Authentication failed')
+            messages.add_message(request, messages.WARNING, 'Authentication failed')
 
     return render(request, 'user/login.html', {'form': form})
 

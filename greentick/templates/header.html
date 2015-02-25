@@ -45,5 +45,8 @@
                     <a href="#">Contact</a>
                 </li>
             </ul>
+            {% if user %}
+                <div class="connected-as">Connected as {{ user.first_name }} {{ user.last_name }}</div>
+            {% endif %}
         </div>
         <!-- /#sidebar-wrapper -->

@@ -31,7 +31,7 @@ def create(request):
             # Show form
             form = CreateRequestForm(user=user)
 
-        return render(request, 'user/create.html', {'form': form})
+        return render(request, 'request/create.html', {'form': form})
     else:
         messages.add_message(request, messages.INFO, 'You are not connected')
         return render(request, 'index/index.html', {})

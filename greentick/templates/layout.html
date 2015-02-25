@@ -65,7 +65,7 @@
             </div>
 
             <div class="footer">
-                {% if user %}
+                {% if user.is_authenticated %}
                     <div class="connected-as"><a href="#">Connected as {{ user.first_name|title }} {{ user.last_name|title }}</a></div>
                 {% endif %}
                 GreenTick - 2015

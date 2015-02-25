@@ -23,6 +23,13 @@
             </div>
         </div>
     </div>
+
+    <div class="footer">
+        {% if user %}
+            <div class="connected-as"><a href="#">Connected as {{ user.first_name|title }} {{ user.last_name|title }}</a></div>
+        {% endif %}
+        GreenTick - 2015
+    </div>
 </div>
 <!-- /#page-content-wrapper -->
 

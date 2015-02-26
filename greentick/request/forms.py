@@ -8,6 +8,9 @@ class CreateRequestForm(forms.Form):
     type = forms.ModelChoiceField(label='Type', queryset=None)
     validators = forms.CharField(label='Validators', max_length=200)
     description = forms.CharField(label='Description', widget=forms.Textarea, max_length=100000)
+    file_1 = forms.FileField(label='Attached file')
+    file_2 = forms.FileField(label='Attached file 2')
+    file_3 = forms.FileField(label='Attached file 3')
     tracking_reference = forms.CharField(label='Tracking reference', max_length=200)
 
     def __init__(self, *args, **kwargs):

@@ -11,8 +11,10 @@
         {% bootstrap_form form %}
         {% buttons %}
             <button type="submit" class="btn btn-success">
-                {% bootstrap_icon "check" %} Create
+                {% bootstrap_icon "chevron-right" %} Create
             </button>
         {% endbuttons %}
     </form>
+
+    <script src="{% static 'request/js/create.js' %}"></script>
 {% endblock %}

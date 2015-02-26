@@ -80,12 +80,14 @@
     display: block;
     text-decoration: none;
     color: white;
+    transition: all 0.3s ease-out;
 }
 
 .sidebar-nav li a:hover {
     text-decoration: none;
     color: #fff;
     background: rgba(255,255,255,0.2);
+    transition: all 0.3s ease-out;
 }
 
 .sidebar-nav li a:active,

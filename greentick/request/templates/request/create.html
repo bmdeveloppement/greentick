@@ -5,7 +5,7 @@
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'request/style.css' %}" />
 
-    <form method="post" action="{% url 'request:create' %}" class="create-request-form">
+    <form method="post" action="{% url 'request:create' %}" class="create-request-form" enctype="multipart/form-data">
         {% csrf_token %}
 
         {% bootstrap_form form %}

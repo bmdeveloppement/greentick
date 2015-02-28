@@ -56,4 +56,4 @@ class File(models.Model):
     user = models.ForeignKey(User)
     request = models.ForeignKey(Request)
     date = models.DateTimeField(auto_now=False, auto_now_add=True)
-    file = models.FileField(upload_to='')
+    file = models.FileField(upload_to='%s/%s' % ('company', 'request'))

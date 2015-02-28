@@ -32,17 +32,17 @@ def create(request):
             company, is_company_created = Company.objects.get_or_create(name=form.cleaned_data.get('company'))
 
             # Create the new user
-            custom_user = CustomUser()
-            custom_user.user = User.objects.create_user(
+            user_obj = CustomUser()
+            user_obj.user = User.objects.create_user(
                 form.cleaned_data.get('username'),
                 form.cleaned_data.get('email'),
                 form.cleaned_data.get('password'),
                 first_name=form.cleaned_data.get('first_name'),
                 last_name=form.cleaned_data.get('last_name')
             )
-            custom_user.company = company
-            custom_user.job_title = form.cleaned_data.get('job_title')
-            custom_user.save()
+            user_obj.company = company
+            user_obj.job_title = form.cleaned_data.get('job_title')
+            user_obj.save()
 
         logger.info('New user created : %s - %s' % (User, Company))
 

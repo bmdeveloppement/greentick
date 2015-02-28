@@ -1,12 +1,15 @@
 from django.db import models
 from django.db.models import Q
 from user.models import User, Company
+from datetime import date
 
 ANSWER_CHOICES = (
     ('1', 'Yes'),
     ('2', 'Maybe'),
     ('3', 'No'),
 )
+
+TODAY = date.today()
 
 
 class Type(models.Model):
@@ -56,4 +59,5 @@ class File(models.Model):
     user = models.ForeignKey(User)
     request = models.ForeignKey(Request)
     date = models.DateTimeField(auto_now=False, auto_now_add=True)
-    file = models.FileField(upload_to='%s/%s' % ('company', 'request'))
+    name = models.CharField(max_length=200)
+    file = models.FileField(upload_to='request_attachments/%s' % TODAY.strftime("%Y/%m/%d"))

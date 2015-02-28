@@ -34,15 +34,18 @@ def create(request):
             request_obj.description = form.cleaned_data.get('description')
             request_obj.tracking_reference = form.cleaned_data.get('tracking_reference')
             request_obj.save()
-            import pdb; pdb.set_trace()
 
             # Upload files
-            if request.FILES.get('file_1'):
+            file_count = 1
+            while request.FILES.get('file_%i' % file_count):
+                file_reference = 'file_%i' % file_count
                 file_obj = File()
                 file_obj.user = user_obj
                 file_obj.request = request_obj
-                file_obj.file = request.FILES['file_1']
+                file_obj.name = request.FILES[file_reference].name
+                file_obj.file = request.FILES[file_reference]
                 file_obj.save()
+                file_count += 1
 
             # Log and notify the user
             logger.info('New request created by %s : %s' % (request.user, 'request_obj'))

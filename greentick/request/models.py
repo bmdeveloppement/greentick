@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Q
 from user.models import User, Company
 from datetime import date
+from request.extras import ContentTypeRestrictedFileField
 
 ANSWER_CHOICES = (
     ('1', 'Yes'),
@@ -60,4 +61,6 @@ class File(models.Model):
     request = models.ForeignKey(Request)
     date = models.DateTimeField(auto_now=False, auto_now_add=True)
     name = models.CharField(max_length=200)
-    file = models.FileField(upload_to='request_attachments/%s' % TODAY.strftime("%Y/%m/%d"))
+    type = models.CharField(max_length=200)
+    size = models.IntegerField()
+    file = ContentTypeRestrictedFileField(upload_to='request_attachments/%s' % TODAY.strftime("%Y/%m/%d"))

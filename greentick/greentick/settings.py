@@ -102,4 +102,5 @@ STATICFILES_DIRS = (
 # Uploaded files
 
 MEDIA_ROOT = 'uploads'
-
+MAX_UPLOAD_SIZE = 20971520  # 20MB limit
+CONTENT_TYPES = {}  # Content type blacklist

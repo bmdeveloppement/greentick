@@ -53,13 +53,17 @@ def create(request):
                     file_obj.save()
                     file_count += 1
         except Exception as e:
-            messages.add_message(request, messages.ERROR, e)
+            if e.message_dict['file']:
+                # Specific error for file upload
+                form._errors[file_reference] = e.message_dict['file']
+            else:
+                messages.add_message(request, messages.ERROR, e.message_dict['file'])
             return render(request, 'request/create.html', {'form': form})
 
         # Log and notify the user
         logger.info('New request created by %s : %s' % (request.user, request_obj.id))
-        messages.add_message(request, messages.INFO, 'Your request has been created')
-        messages.add_message(request, messages.INFO, 'Email has been sent to %s' % 'bm@gmail.com')
+        messages.add_message(request, messages.INFO, 'Your request has been created. Notifications has been sent to %s' %
+                             'bm@gmail.com')
 
         # Redirect on the dashboard
         return redirect('/dashboard/')

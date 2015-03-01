@@ -57,7 +57,7 @@ def create(request):
                 # Specific error for file upload
                 form._errors[file_reference] = e.message_dict['file']
             else:
-                messages.add_message(request, messages.ERROR, e.message_dict['file'])
+                messages.add_message(request, messages.ERROR, e)
             return render(request, 'request/create.html', {'form': form})
 
         # Log and notify the user

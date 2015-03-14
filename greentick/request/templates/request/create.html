@@ -4,17 +4,63 @@
 {% block content %}
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'request/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'request/dropzone.css' %}" />
 
-    <form method="post" action="{% url 'request:create' %}" class="create-request-form" enctype="multipart/form-data">
+    <form method="post" action="{% url 'request:create' %}" id="dropzone-form" class="create-request-form" enctype="multipart/form-data">
         {% csrf_token %}
 
         {% bootstrap_form form %}
+        <div class="dropzone-previews dropzone" id="dropzone"></div>
         {% buttons %}
-            <button type="submit" class="btn btn-success">
+            <button type="submit" class="btn btn-success" id="submit-all">
                 {% bootstrap_icon "chevron-right" %} Create
             </button>
         {% endbuttons %}
     </form>
 
-    <script src="{% static 'request/js/create.js' %}"></script>
+    <script src="{% static 'request/js/dropzone.js' %}"></script>
+    <script type="text/javascript">
+    Dropzone.options.dropzone = { // The camelized version of the ID of the form element
+
+        // The configuration we've talked about above
+        url: "{% url 'request:create' %}",
+        autoProcessQueue: false,
+        uploadMultiple: true,
+        parallelUploads: 20,
+        maxFiles: 20,
+        previewsContainer: ".dropzone-previews",
+
+        // The setting up of the dropzone
+        init: function() {
+            var myDropzone = this;
+            var submitButton = document.querySelector("button[type=submit]");
+
+            // First change the button to actually tell Dropzone to process the queue.
+            submitButton.addEventListener("click", function(e) {
+                // Make sure that the form isn't actually being sent.
+                e.preventDefault();
+                e.stopPropagation();
+                myDropzone.processQueue();
+            });
+
+            // Listen to the sendingmultiple event. In this case, it's the sendingmultiple event instead
+            // of the sending event because uploadMultiple is set to true.
+            this.on("sendingmultiple", function() {
+                alert('sending multiple');
+                // Gets triggered when the form is actually being sent.
+                // Hide the success button or the complete form.
+            });
+            this.on("successmultiple", function(files, response) {
+                alert('successmultiple');
+                // Gets triggered when the files have successfully been sent.
+                // Redirect user or notify of success.
+            });
+            this.on("errormultiple", function(files, response) {
+                alert('errormultiple');
+                // Gets triggered when there was an error sending the files.
+                // Maybe show form again, and notify user of error
+            });
+        }
+    }
+    </script>
 {% endblock %}

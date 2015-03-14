@@ -7,9 +7,7 @@ class CreateRequestForm(forms.Form):
     type = forms.ModelChoiceField(label='Type', queryset=None)
     validators = forms.CharField(label='Validators', max_length=200)
     description = forms.CharField(label='Description', widget=forms.Textarea, max_length=10000)
-    file_1 = forms.FileField(label='Attached file', required=False)
-    file_2 = forms.FileField(label='Attached file 2', required=False)
-    file_3 = forms.FileField(label='Attached file 3', required=False)
+    file = forms.FileField(label='Attached files', required=False)
     tracking_reference = forms.CharField(label='Tracking reference', max_length=200, required=False)
 
     def __init__(self, *args, **kwargs):
@@ -20,3 +18,4 @@ class CreateRequestForm(forms.Form):
 
         # Fill the 'type' choice
         self.fields['type'] = forms.ModelChoiceField(queryset=Type.get_for_user(user))
+        # self.fields['file'].widget.attrs.update({'class': 'dropzone'})

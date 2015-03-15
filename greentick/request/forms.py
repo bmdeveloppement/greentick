@@ -1,5 +1,5 @@
 from django import forms
-from request.models import Type
+from request.models import File, Type
 
 
 class CreateRequestForm(forms.Form):
@@ -17,3 +17,10 @@ class CreateRequestForm(forms.Form):
 
         # Fill the 'type' choice
         self.fields['type'] = forms.ModelChoiceField(queryset=Type.get_for_user(user))
+
+
+class UploadFileForm(forms.ModelForm):
+
+    class Meta:
+        model = File
+        fields = []

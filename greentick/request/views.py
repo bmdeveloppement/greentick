@@ -2,8 +2,7 @@ import logging
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.db import transaction
-from django.core.exceptions import ValidationError
-from request.forms import CreateRequestForm
+from request.forms import CreateRequestForm, UploadFileForm
 from user.models import User
 from request.models import Request, Type, File
 
@@ -24,48 +23,57 @@ def create(request):
     # Process form
     if form.is_valid():
         # Transactional DB Registering
-        try:
-            with transaction.atomic():
-                # Get type obj
-                type_obj = form.cleaned_data.get('type')
+        with transaction.atomic():
+            # Get type obj
+            type_obj = form.cleaned_data.get('type')
 
-                # Create the new request
-                request_obj = Request()
-                request_obj.user = user_obj
-                request_obj.type = type_obj
-                request_obj.name = form.cleaned_data.get('name')
-                request_obj.description = form.cleaned_data.get('description')
-                request_obj.tracking_reference = form.cleaned_data.get('tracking_reference')
-                request_obj.save()
+            # Create the new request
+            request_obj = Request()
+            request_obj.user = user_obj
+            request_obj.type = type_obj
+            request_obj.name = form.cleaned_data.get('name')
+            request_obj.description = form.cleaned_data.get('description')
+            request_obj.tracking_reference = form.cleaned_data.get('tracking_reference')
+            request_obj.save()
 
-                # Upload files
-                # import pdb; pdb.set_trace()
-                for key in request.FILES:
-                    handle_uploaded_file(user_obj, request_obj, request.FILES[key])
+            # Log and notify the user
+            logger.info('New request created by %s : %s' % (request.user, request_obj.id))
+            messages.add_message(request,
+                                 messages.INFO,
+                                 'Your request has been created. Drop here some files if needed.')
 
-        except Exception as e:
-            messages.add_message(request, messages.ERROR, e)
-            return render(request, 'request/create.html', {'form': form})
-
-        # Log and notify the user
-        logger.info('New request created by %s : %s' % (request.user, request_obj.id))
-        messages.add_message(request, messages.INFO, 'Your request has been created. Notifications has been sent to %s' %
-                             'bm@gmail.com')
-
-        # Redirect on the dashboard
-        return redirect('/dashboard/')
+            # Redirect on the dashboard
+            return redirect('/request/upload-file/%i' % request_obj.id)
 
     return render(request, 'request/create.html', {'form': form})
 
 
-def handle_uploaded_file(user, request, file):
-    # Save file and properties
-    file_obj = File()
-    file_obj.user = user
-    file_obj.request = request
-    file_obj.name = file.name
-    file_obj.type = file.content_type
-    file_obj.size = file._size
-    file_obj.file = file
-    file_obj.full_clean()
-    return file_obj.save()
+def upload_file(request, request_id):
+    # Check authentication
+    if not request.user.is_authenticated():
+        messages.add_message(request, messages.INFO, 'You are not connected')
+        return render(request, 'index/index.html', {})
+
+    # Get user and form
+    user_obj = User.objects.filter(pk=request.user.id).get()
+    request_obj = Request.objects.filter(pk=request_id).get()
+
+    form = UploadFileForm(request.POST or None)
+
+    # Process form
+    if form.is_valid():
+        for key in request.FILES:
+            # Save file and properties
+            file = request.FILES[key]
+            file_obj = File()
+            file_obj.user = user_obj
+            file_obj.request = request_obj
+            file_obj.name = file.name
+            file_obj.type = file.content_type
+            file_obj.size = file._size
+            file_obj.file = file
+            file_obj.full_clean()
+            return file_obj.save()
+        return redirect('/dashboard/')
+
+    return render(request, 'request/upload-file.html', {'form': form, 'request': request_obj})

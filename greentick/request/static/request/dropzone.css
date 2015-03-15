@@ -173,11 +173,7 @@
 .dropzone, .dropzone * {
   box-sizing: border-box; }
 
-.dropzone {
-  min-height: 150px;
-  border: 2px solid rgba(0, 0, 0, 0.3);
-  background: white;
-  padding: 20px 20px; }
+.dropzone {}
   .dropzone.dz-clickable {
     cursor: pointer; }
     .dropzone.dz-clickable * {
@@ -426,3 +422,16 @@
       height: 58px;
       left: 50%;
       margin-left: -27px; }
+
+#dropzonePreview {
+    border: 2px dashed rgb(39, 174, 96);
+    border-radius: 5px;
+    background: white;
+    padding: 40px 40px;
+    box-sizing: border-box;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    cursor: pointer;
+    font-size: 18px;
+}

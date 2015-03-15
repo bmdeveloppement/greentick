@@ -39,25 +39,19 @@ def create(request):
                 request_obj.save()
 
                 # Upload files
-                file_count = 1
-                while request.FILES.get('file_%i' % file_count):
-                    file_reference = 'file_%i' % file_count
+                import pdb; pdb.set_trace()
+                for uploaded_file in request.FILES:
                     file_obj = File()
                     file_obj.user = user_obj
                     file_obj.request = request_obj
-                    file_obj.name = request.FILES[file_reference].name
-                    file_obj.type = request.FILES[file_reference].content_type
-                    file_obj.size = request.FILES[file_reference]._size
-                    file_obj.file = request.FILES[file_reference]
+                    file_obj.name = uploaded_file.name
+                    file_obj.type = uploaded_file.content_type
+                    file_obj.size = uploaded_file._size
+                    file_obj.file = uploaded_file
                     file_obj.full_clean()
                     file_obj.save()
-                    file_count += 1
         except Exception as e:
-            if e.message_dict['file']:
-                # Specific error for file upload
-                form._errors[file_reference] = e.message_dict['file']
-            else:
-                messages.add_message(request, messages.ERROR, e)
+            messages.add_message(request, messages.ERROR, e)
             return render(request, 'request/create.html', {'form': form})
 
         # Log and notify the user

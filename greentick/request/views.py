@@ -2,6 +2,7 @@ import logging
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.db import transaction
+from django.http import HttpResponse
 from request.forms import CreateRequestForm, UploadFileForm
 from user.models import User
 from request.models import Request, Type, File
@@ -62,18 +63,25 @@ def upload_file(request, request_id):
 
     # Process form
     if form.is_valid():
-        for key in request.FILES:
-            # Save file and properties
-            file = request.FILES[key]
-            file_obj = File()
-            file_obj.user = user_obj
-            file_obj.request = request_obj
-            file_obj.name = file.name
-            file_obj.type = file.content_type
-            file_obj.size = file._size
-            file_obj.file = file
-            file_obj.full_clean()
-            return file_obj.save()
-        return redirect('/dashboard/')
+        try:
+            for key in request.FILES:
+                # Save file and properties
+                file = request.FILES[key]
+                file_obj = File()
+                file_obj.user = user_obj
+                file_obj.request = request_obj
+                file_obj.name = file.name
+                file_obj.type = file.content_type
+                file_obj.size = file._size
+                file_obj.file = file
+                file_obj.full_clean()
+                file_obj.save()
+            return HttpResponse(status=201)
+        except Exception as e:
+            message = 'An error occured while uploading the file'
+            if e.message_dict['file']:
+                # Specific error
+                message = e.message_dict['file']
+            return HttpResponse(message, status=403)
 
     return render(request, 'request/upload-file.html', {'form': form, 'request': request_obj})

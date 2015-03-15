@@ -24,13 +24,17 @@
     <script type="text/javascript">
     Dropzone.options.dropzoneForm = {
         paramName: 'file',
+        maxFilesize: 20,
         uploadMultiple: true,
         parallelUploads: 20,
         maxFiles: 20,
         addRemoveLinks: true,
         previewsContainer: '#dropzonePreview',
         clickable:'#dropzonePreview',
-
+        sending: function(file, xhr, formData) {
+            // Pass token. You can use the same method to pass any other values as well such as a id to associate the image with for example.
+            formData.append('csrfmiddlewaretoken', document.getElementsByName('csrfmiddlewaretoken')[0].value);
+        },
         // The setting up of the dropzone
         init: function() {
             var myDropzone = this;

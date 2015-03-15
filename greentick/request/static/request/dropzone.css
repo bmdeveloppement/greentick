@@ -371,7 +371,7 @@
       background: #be2626;
       background: linear-gradient(to bottom, #be2626, #a92222);
       padding: 0.5em 1.2em;
-      color: white; }
+      font-color: white; }
       .dropzone .dz-preview .dz-error-message:after {
         content: '';
         position: absolute;
@@ -407,7 +407,7 @@
         width: 0;
         background: green; }
     .dropzone .dz-preview .dz-error-message {
-      color: red;
+      color: white;
       display: none; }
     .dropzone .dz-preview.dz-error .dz-error-message, .dropzone .dz-preview.dz-error .dz-error-mark {
       display: block; }

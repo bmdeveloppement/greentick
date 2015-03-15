@@ -39,17 +39,10 @@ def create(request):
                 request_obj.save()
 
                 # Upload files
-                import pdb; pdb.set_trace()
-                for uploaded_file in request.FILES:
-                    file_obj = File()
-                    file_obj.user = user_obj
-                    file_obj.request = request_obj
-                    file_obj.name = uploaded_file.name
-                    file_obj.type = uploaded_file.content_type
-                    file_obj.size = uploaded_file._size
-                    file_obj.file = uploaded_file
-                    file_obj.full_clean()
-                    file_obj.save()
+                # import pdb; pdb.set_trace()
+                for key in request.FILES:
+                    handle_uploaded_file(user_obj, request_obj, request.FILES[key])
+
         except Exception as e:
             messages.add_message(request, messages.ERROR, e)
             return render(request, 'request/create.html', {'form': form})
@@ -63,3 +56,16 @@ def create(request):
         return redirect('/dashboard/')
 
     return render(request, 'request/create.html', {'form': form})
+
+
+def handle_uploaded_file(user, request, file):
+    # Save file and properties
+    file_obj = File()
+    file_obj.user = user
+    file_obj.request = request
+    file_obj.name = file.name
+    file_obj.type = file.content_type
+    file_obj.size = file._size
+    file_obj.file = file
+    file_obj.full_clean()
+    return file_obj.save()
